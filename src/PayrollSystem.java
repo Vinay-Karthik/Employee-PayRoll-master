@@ -7,6 +7,7 @@ import service.PayrollServiceImpl;
 import policy.tax.TaxPolicyRegistry;
 import policy.deduction.DeductionPolicyRegistry;
 import decorator.pipeline.SalaryEnhancementPipeline;
+import decorator.pipeline.SalaryPipelineBuilder;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -159,7 +160,12 @@ public class PayrollSystem {
 
     private static void salaryEnhancementDemo() {
         System.out.print("Base Salary: "); BigDecimal base = new BigDecimal(sc.nextLine());
-        SalaryEnhancementPipeline p = new SalaryEnhancementPipeline(base);
+        
+        SalaryEnhancementPipeline p = new SalaryPipelineBuilder()
+            .baseSalary(base)
+            .withDefaults()
+            .build();
+        
         System.out.println("Apply enhancements (y/n):");
         System.out.print("HRA (20% base)? "); if (sc.nextLine().equalsIgnoreCase("y")) p.applyHRA();
         System.out.print("Transport ($1600)? "); if (sc.nextLine().equalsIgnoreCase("y")) p.applyTransport();
