@@ -4,20 +4,22 @@ import factory.ContractorData;
 import factory.EmployeeFactory;
 import factory.FixedContractorData;
 import factory.FullTimeData;
+import model.Department;
 import model.Employee;
 import model.EmployeeType;
 import model.TaxRegime;
 import ui.ConsoleUI;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 public class EmployeeCreator {
    private final EmployeeFactory factory;
    private final ConsoleUI ui;
-   private final List<String> departments;
+   private final List<Department> departments;
 
-   public EmployeeCreator(EmployeeFactory factory, ConsoleUI ui, List<String> departments) {
+   public EmployeeCreator(EmployeeFactory factory, ConsoleUI ui, List<Department> departments) {
       this.factory = factory;
       this.ui = ui;
       this.departments = departments;
@@ -27,7 +29,7 @@ public class EmployeeCreator {
       EmployeeType type = selectEmployeeType();
       int id = ui.readInt("ID: ");
       String name = ui.readLine("Name: ");
-      String dept = selectDepartment();
+      String dept = selectDepartment().getDisplayName();
       String bank = ui.readLine("Bank Account: ");
 
       return switch (type) {
@@ -54,8 +56,8 @@ public class EmployeeCreator {
       };
    }
 
-   private String selectDepartment() {
-      return ui.selectFromList("Department:", departments, d -> d);
+   private Department selectDepartment() {
+      return ui.selectFromList("Department:", departments, Department::getDisplayName);
    }
 
    private Employee createFullTime(int id, String name, String dept, String bank) {
