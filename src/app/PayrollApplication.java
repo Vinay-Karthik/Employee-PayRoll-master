@@ -13,6 +13,7 @@ import service.PayrollService;
 import service.PayrollServiceImpl;
 import service.SalaryEnhancementService;
 import ui.ConsoleUI;
+import ui.MenuAction;
 import ui.MenuOption;
 
 import java.math.BigDecimal;
@@ -64,12 +65,12 @@ public class PayrollApplication {
       );
    }
 
-   private MenuOption menu(String key, String description, Runnable action) {
+   private MenuOption menu(String key, String description, MenuAction action) {
       return new MenuOption() {
          public String getKey() { return key; }
          public String getDescription() { return description; }
          public void execute() {
-            action.run();
+            action.execute();
          }
       };
    }
