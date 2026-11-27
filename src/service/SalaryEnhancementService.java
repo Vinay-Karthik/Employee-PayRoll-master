@@ -24,7 +24,6 @@ public class SalaryEnhancementService {
 
         ui.printLine("\nApply enhancements (enter amount or press Enter for default):");
 
-        // Loop over configured decorators instead of repetitive calls
         for (DecoratorConfig config : DecoratorConfig.DEFAULT_DECORATORS) {
             BigDecimal defaultAmount = config.defaultAmountCalculator().apply(base);
             String prompt = String.format("%s (default %,.2f): ", config.displayName(), defaultAmount);
