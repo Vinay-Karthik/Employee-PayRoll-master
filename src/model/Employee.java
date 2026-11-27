@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.EmployeeType;
+import model.enums.TaxRegime;
 import policy.deduction.DeductionPolicy;
 import policy.deduction.DeductionPolicyRegistry;
 import policy.tax.TaxPolicy;

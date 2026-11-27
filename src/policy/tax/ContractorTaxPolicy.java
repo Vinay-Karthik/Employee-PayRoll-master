@@ -1,6 +1,6 @@
 package policy.tax;
 
-import model.TaxRegime;
+import model.enums.TaxRegime;
 
 import java.math.BigDecimal;
 

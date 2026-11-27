@@ -1,6 +1,6 @@
 package policy.tax;
 
-import model.EmployeeType;
+import model.enums.EmployeeType;
 
 import java.util.HashMap;
 import java.util.Map;

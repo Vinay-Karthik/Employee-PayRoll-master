@@ -1,11 +1,8 @@
 package app;
 
-import factory.EmployeeFactory;
-import model.Department;
+import model.enums.Department;
 import model.Employee;
 import model.PaySlip;
-import policy.deduction.DeductionPolicyRegistry;
-import policy.tax.TaxPolicyRegistry;
 import report.PayrollReportFormatter;
 import repository.EmployeeRepository;
 import repository.InMemoryEmployeeRepository;
@@ -34,13 +31,9 @@ public class PayrollApplication {
         this.ui = new ConsoleUI();
 
         EmployeeRepository repository = new InMemoryEmployeeRepository();
-        TaxPolicyRegistry taxRegistry = new TaxPolicyRegistry();
-        DeductionPolicyRegistry deductionRegistry = new DeductionPolicyRegistry();
-
-        EmployeeFactory factory = new EmployeeFactory(taxRegistry, deductionRegistry);
 
         this.payrollService = new PayrollServiceImpl(repository);
-        this.employeeCreator = new EmployeeCreator(factory, ui, getDepartments());
+        this.employeeCreator = new EmployeeCreator(ui, getDepartments());
         this.salaryEnhancementService = new SalaryEnhancementService(ui);
         this.reportFormatter = new PayrollReportFormatter();
 

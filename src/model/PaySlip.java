@@ -1,5 +1,7 @@
 package model;
 
+import model.enums.TaxRegime;
+
 import java.math.BigDecimal;
 
 public record PaySlip(
