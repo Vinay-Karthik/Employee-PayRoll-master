@@ -28,18 +28,6 @@ public class ContractorEmployee extends Employee {
       this.fixedContractAmount = builder.fixedContractAmount;
    }
 
-   public BigDecimal getHourlyRate() {
-      return hourlyRate;
-   }
-
-   public BigDecimal getHoursWorked() {
-      return hoursWorked;
-   }
-
-   public BigDecimal getFixedContractAmount() {
-      return fixedContractAmount;
-   }
-
    @Override
    public BigDecimal calculateGrossPay() {
       if (fixedContractAmount != null && fixedContractAmount.signum() > 0) {

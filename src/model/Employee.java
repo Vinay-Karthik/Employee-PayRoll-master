@@ -53,18 +53,6 @@ public abstract class Employee {
       this.department = department;
    }
 
-   public String getBankAccount() {
-      return bankAccount;
-   }
-
-   public void setBankAccount(String bankAccount) {
-      this.bankAccount = bankAccount;
-   }
-
-   public TaxRegime getTaxRegime() {
-      return taxRegime;
-   }
-
    public void setTaxRegime(TaxRegime taxRegime) {
       this.taxRegime = taxRegime;
    }
