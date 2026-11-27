@@ -8,11 +8,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * In-memory employee repository implementation.
- * SRP: Only in-memory storage concerns.
- * LSP: Can substitute any EmployeeRepository implementation.
- */
 public class InMemoryEmployeeRepository implements EmployeeRepository {
    private final Map<Integer, Employee> employees = new ConcurrentHashMap<>();
 

@@ -23,26 +23,25 @@ public record PaySlip(
 
    @Override
    public String toString() {
-      StringBuilder sb = new StringBuilder();
       String line = "================================================================";
       String separator = "----------------------------------------------------------------";
 
-      sb.append(line).append("\n");
-      sb.append("                         PAY SLIP\n");
-      sb.append(line).append("\n");
-      sb.append(String.format("  Employee ID   : %d\n", employeeId));
-      sb.append(String.format("  Name          : %s\n", employeeName));
-      sb.append(String.format("  Department    : %s\n", department));
-      sb.append(String.format("  Role          : %s\n", roleCategory));
-      sb.append(String.format("  Bank Account  : %s\n", bankAccountNumber));
-      sb.append(String.format("  Tax Regime    : %s\n", taxRegime));
-      sb.append(separator).append("\n");
-      sb.append(String.format("  Gross Pay     : Rs. %,.2f\n", grossPay));
-      sb.append(String.format("  Tax Withheld  : Rs. %,.2f\n", taxWithholding));
-      sb.append(String.format("  Deductions    : Rs. %,.2f\n", deductions));
-      sb.append(separator).append("\n");
-      sb.append(String.format("  NET PAY       : Rs. %,.2f\n", netPay));
-      sb.append(line);
-      return sb.toString();
+      String sb = line + "\n" +
+              "                         PAY SLIP\n" +
+              line + "\n" +
+              String.format("  Employee ID   : %d\n", employeeId) +
+              String.format("  Name          : %s\n", employeeName) +
+              String.format("  Department    : %s\n", department) +
+              String.format("  Role          : %s\n", roleCategory) +
+              String.format("  Bank Account  : %s\n", bankAccountNumber) +
+              String.format("  Tax Regime    : %s\n", taxRegime) +
+              separator + "\n" +
+              String.format("  Gross Pay     : Rs. %,.2f\n", grossPay) +
+              String.format("  Tax Withheld  : Rs. %,.2f\n", taxWithholding) +
+              String.format("  Deductions    : Rs. %,.2f\n", deductions) +
+              separator + "\n" +
+              String.format("  NET PAY       : Rs. %,.2f\n", netPay) +
+              line;
+      return sb;
    }
 }

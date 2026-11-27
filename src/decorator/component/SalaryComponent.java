@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 public interface SalaryComponent {
    BigDecimal calculateSalary();
 
-   BigDecimal getBaseSalary();
+   BigDecimal baseSalary();
 
    String getDescription();
 }

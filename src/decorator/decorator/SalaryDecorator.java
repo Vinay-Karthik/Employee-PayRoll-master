@@ -15,8 +15,8 @@ public abstract class SalaryDecorator implements SalaryComponent {
    }
 
    @Override
-   public BigDecimal getBaseSalary() {
-      return wrapped.getBaseSalary();
+   public BigDecimal baseSalary() {
+      return wrapped.baseSalary();
    }
 
    @Override

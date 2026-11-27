@@ -1,15 +1,12 @@
 package app;
 
-import model.enums.Department;
 import model.Employee;
 import model.PaySlip;
+import model.enums.Department;
 import report.PayrollReportFormatter;
 import repository.EmployeeRepository;
 import repository.InMemoryEmployeeRepository;
-import service.EmployeeCreator;
-import service.PayrollService;
-import service.PayrollServiceImpl;
-import service.SalaryEnhancementService;
+import service.*;
 import ui.ConsoleUI;
 import ui.MenuAction;
 import ui.MenuOption;
@@ -19,124 +16,133 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PayrollApplication {
-    private final ConsoleUI ui;
-    private final PayrollService payrollService;
-    private final EmployeeCreator employeeCreator;
-    private final SalaryEnhancementService salaryEnhancementService;
-    private final PayrollReportFormatter reportFormatter;
-    private final List<MenuOption> menuOptions;
-    private boolean running = true;
+   private final ConsoleUI ui;
+   private final PayrollService payrollService;
+   private final EmployeeCreator employeeCreator;
+   private final SalaryEnhancementService salaryEnhancementService;
+   private final PayrollReportFormatter reportFormatter;
+   private final List<MenuOption> menuOptions;
+   private boolean running = true;
 
-    public PayrollApplication() {
-        this.ui = new ConsoleUI();
+   public PayrollApplication() {
+      this.ui = new ConsoleUI();
 
-        EmployeeRepository repository = new InMemoryEmployeeRepository();
+      EmployeeRepository repository = new InMemoryEmployeeRepository();
+      EmployeeFactory factory = new EmployeeFactory();
 
-        this.payrollService = new PayrollServiceImpl(repository);
-        this.employeeCreator = new EmployeeCreator(ui, getDepartments());
-        this.salaryEnhancementService = new SalaryEnhancementService(ui);
-        this.reportFormatter = new PayrollReportFormatter();
+      this.payrollService = new PayrollServiceImpl(repository);
+      this.employeeCreator = new EmployeeCreator(ui, getDepartments(), factory);
+      this.salaryEnhancementService = new SalaryEnhancementService(ui);
+      this.reportFormatter = new PayrollReportFormatter();
 
-        this.menuOptions = createMenuOptions();
-        seedData();
-    }
+      this.menuOptions = createMenuOptions();
+      seedData();
+   }
 
-    private List<Department> getDepartments() {
-        return Arrays.asList(Department.values());
-    }
+   private List<Department> getDepartments() {
+      return Arrays.asList(Department.values());
+   }
 
-    private List<MenuOption> createMenuOptions() {
-        return List.of(
-                menu("1", "List Employees", this::listEmployees),
-                menu("2", "Add Employee", this::addEmployee),
-                menu("3", "View Pay Slip", this::viewPaySlip),
-                menu("4", "Run Full Payroll", this::runFullPayroll),
-                menu("5", "Salary Enhancement Demo", salaryEnhancementService::runDemo),
-                menu("6", "Delete Employee", this::deleteEmployee),
-                menu("7", "Exit", this::exit)
-        );
-    }
+   private List<MenuOption> createMenuOptions() {
+      return List.of(
+              menu("1", "List Employees", this::listEmployees),
+              menu("2", "Add Employee", this::addEmployee),
+              menu("3", "View Pay Slip", this::viewPaySlip),
+              menu("4", "Run Full Payroll", this::runFullPayroll),
+              menu("5", "Salary Enhancement Demo", salaryEnhancementService::runDemo),
+              menu("6", "Delete Employee", this::deleteEmployee),
+              menu("7", "Exit", this::exit)
+      );
+   }
 
-    public void run() {
-        ui.printLine("=== Employee Payroll System ===");
+   public void run() {
+      ui.printLine("=== Employee Payroll System ===");
 
-        while (running) {
-            printMenu();
-            String input = ui.readLine("Choice: ");
-            executeOption(input);
-        }
+      while (running) {
+         printMenu();
+         String input = ui.readLine("Choice: ");
+         executeOption(input);
+      }
 
-        ui.close();
-    }
+      ui.close();
+   }
 
-    private void printMenu() {
-        ui.printLine("\n--- MENU ---");
-        for (MenuOption option : menuOptions) {
-            ui.printLine("  " + option.getKey() + ". " + option.getDescription());
-        }
-    }
+   private void printMenu() {
+      ui.printLine("\n--- MENU ---");
+      for (MenuOption option : menuOptions) {
+         ui.printLine("  " + option.getKey() + ". " + option.getDescription());
+      }
+   }
 
-    private void executeOption(String input) {
-        for (MenuOption option : menuOptions) {
-            if (option.getKey().equals(input)) {
-                option.execute();
-                return;
-            }
-        }
-        ui.printLine("Invalid option.");
-    }
-
-    private void seedData() {
-        payrollService.registerEmployee(employeeCreator.createFullTimeForSeed(1, "Alice Johnson", "Engineering", "BANK001", new BigDecimal("6500"), new BigDecimal("800")));
-        payrollService.registerEmployee(employeeCreator.createContractorForSeed(2, "Bob Smith", "IT Consulting", "BANK002", new BigDecimal("5000")));
-        payrollService.registerEmployee(employeeCreator.createHourlyContractorForSeed(3, "Carol Davis", "Operations", "BANK003", new BigDecimal("75"), new BigDecimal("60")));
-    }
-
-    private void listEmployees() {
-        var emps = payrollService.getAllEmployees();
-        if (emps.isEmpty()) {
-            ui.printLine("No employees.");
+   private void executeOption(String input) {
+      for (MenuOption option : menuOptions) {
+         if (option.getKey().equals(input)) {
+            option.execute();
             return;
-        }
-        ui.printLine(String.format("%-5s %-15s %-15s %-10s", "ID", "Name", "Department", "Type"));
-        for (var e : emps) {
-            ui.printLine(String.format("%-5d %-15s %-15s %-10s", e.getId(), e.getName(), e.getDepartment(), e.getType().label));
-        }
-    }
+         }
+      }
+      ui.printLine("Invalid option.");
+   }
 
-    private void addEmployee() {
-        Employee emp = employeeCreator.createEmployee();
-        payrollService.registerEmployee(emp);
-    }
+   private void seedData() {
+      payrollService.registerEmployee(employeeCreator.createFullTimeForSeed(1, "Alice Johnson", "Engineering", "BANK001", new BigDecimal("6500"), new BigDecimal("800")));
+      payrollService.registerEmployee(employeeCreator.createFixedContractorForSeed(2, "Bob Smith", "IT Consulting", "BANK002", new BigDecimal("5000")));
+      payrollService.registerEmployee(employeeCreator.createHourlyContractorForSeed(3, "Carol Davis", "Operations", "BANK003", new BigDecimal("75"), new BigDecimal("60")));
+   }
 
-    private void viewPaySlip() {
-        int id = ui.readInt("Employee ID: ");
-        payrollService.getEmployeeById(id).ifPresentOrElse(
-                e -> ui.printLine(e.generatePaySlip().toString()),
-                () -> ui.printLine("Employee not found.")
-        );
-    }
+   private void listEmployees() {
+      var emps = payrollService.getAllEmployees();
+      if (emps.isEmpty()) {
+         ui.printLine("No employees.");
+         return;
+      }
+      ui.printLine(String.format("%-5s %-15s %-15s %-10s", "ID", "Name", "Department", "Type"));
+      for (var e : emps) {
+         ui.printLine(String.format("%-5d %-15s %-15s %-10s", e.getId(), e.getName(), e.getDepartment(), e.getType().label));
+      }
+   }
 
-    private void runFullPayroll() {
-        List<PaySlip> slips = payrollService.processAllPaySlips();
-        ui.printLine(reportFormatter.format(slips));
-    }
+   private void addEmployee() {
+      Employee emp = employeeCreator.createEmployee();
+      payrollService.registerEmployee(emp);
+   }
 
-    private void deleteEmployee() {
-        int id = ui.readInt("Employee ID: ");
-        ui.printLine(payrollService.removeEmployee(id) ? "Deleted." : "Not found.");
-    }
+   private void viewPaySlip() {
+      int id = ui.readInt("Employee ID: ");
+      payrollService.getEmployeeById(id).ifPresentOrElse(
+              e -> ui.printLine(e.generatePaySlip().toString()),
+              () -> ui.printLine("Employee not found.")
+      );
+   }
 
-    private void exit() {
-        running = false;
-        ui.printLine("Goodbye!");
-    }
+   private void runFullPayroll() {
+      List<PaySlip> slips = payrollService.processAllPaySlips();
+      ui.printLine(reportFormatter.format(slips));
+   }
 
-    private MenuOption menu(String key, String description, MenuAction action) {
-        return new MenuOption() {
-            public String getKey() { return key; }
-            public String getDescription() { return description; }
-            public void execute() { action.execute(); }
-        };
-    }
+   private void deleteEmployee() {
+      int id = ui.readInt("Employee ID: ");
+      ui.printLine(payrollService.removeEmployee(id) ? "Deleted." : "Not found.");
+   }
+
+   private void exit() {
+      running = false;
+      ui.printLine("Goodbye!");
+   }
+
+   private MenuOption menu(String key, String description, MenuAction action) {
+      return new MenuOption() {
+         public String getKey() {
+            return key;
+         }
+
+         public String getDescription() {
+            return description;
+         }
+
+         public void execute() {
+            action.execute();
+         }
+      };
+   }
 }

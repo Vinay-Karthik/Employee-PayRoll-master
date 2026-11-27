@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public class HraDecorator extends SalaryDecorator {
    public HraDecorator(SalaryComponent wrapped) {
-      this(wrapped, wrapped.getBaseSalary().multiply(new BigDecimal("0.20")));
+      this(wrapped, wrapped.baseSalary().multiply(new BigDecimal("0.20")));
    }
 
    public HraDecorator(SalaryComponent wrapped, BigDecimal customAmount) {

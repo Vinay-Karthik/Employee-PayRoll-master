@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 public class PerformanceBonusDecorator extends SalaryDecorator {
    public PerformanceBonusDecorator(SalaryComponent wrapped) {
-      this(wrapped, wrapped.getBaseSalary().multiply(new BigDecimal("0.10")));
+      this(wrapped, wrapped.baseSalary().multiply(new BigDecimal("0.10")));
    }
 
    public PerformanceBonusDecorator(SalaryComponent wrapped, BigDecimal customAmount) {
