@@ -20,40 +20,34 @@ public class SalaryEnhancementService {
    public void runDemo() {
       BigDecimal base = ui.readBigDecimal("Base Salary: ");
 
-      // Build the decorator chain directly - simple and clean
       SalaryComponent salary = new BaseSalary(base);
 
       ui.printLine("\nApply enhancements (enter amount or press Enter for default):");
 
-      // HRA - default 20% of base
       BigDecimal defaultHra = base.multiply(new BigDecimal("0.20"));
       String input = ui.readLine(String.format("HRA (default %,.2f): ", defaultHra)).trim();
       salary = input.isEmpty()
               ? new HraDecorator(salary)
               : new HraDecorator(salary, new BigDecimal(input));
 
-      // Transport - default 1600
       BigDecimal defaultTransport = new BigDecimal("1600");
       input = ui.readLine(String.format("Transport (default %,.2f): ", defaultTransport)).trim();
       salary = input.isEmpty()
               ? new TransportAllowanceDecorator(salary)
               : new TransportAllowanceDecorator(salary, new BigDecimal(input));
 
-      // Bonus - default 10% of base
       BigDecimal defaultBonus = base.multiply(new BigDecimal("0.10"));
       input = ui.readLine(String.format("Bonus (default %,.2f): ", defaultBonus)).trim();
       salary = input.isEmpty()
               ? new PerformanceBonusDecorator(salary)
               : new PerformanceBonusDecorator(salary, new BigDecimal(input));
 
-      // Insurance - default 150 (deduction)
       BigDecimal defaultInsurance = new BigDecimal("150");
       input = ui.readLine(String.format("Insurance (default %,.2f): ", defaultInsurance)).trim();
       salary = input.isEmpty()
               ? new InsuranceDeductionDecorator(salary)
               : new InsuranceDeductionDecorator(salary, new BigDecimal(input));
 
-      // Display results
       ui.printHeader("SALARY ENHANCEMENT SUMMARY");
       ui.printLine(salary.getDescription());
       ui.printSeparator();

@@ -3,6 +3,7 @@ package ui;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
 public class ConsoleUI {
    private final Scanner scanner = new Scanner(System.in);
@@ -32,7 +33,7 @@ public class ConsoleUI {
       }
    }
 
-   public <T> T selectFromList(String title, List<T> options, java.util.function.Function<T, String> displayMapper) {
+   public <T> T selectFromList(String title, List<T> options, Function<T, String> displayMapper) {
       System.out.println(title);
       for (int i = 0; i < options.size(); i++) {
          System.out.printf("  %d. %s\n", i + 1, displayMapper.apply(options.get(i)));

@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 
 public class EmployeeFactory {
 
-   // ==================== Interactive Creation Methods ====================
 
    public Employee createFullTime(int id, String name, String department, String bankAccount,
                                   BigDecimal baseSalary, BigDecimal bonus, TaxRegime taxRegime) {
@@ -49,7 +48,6 @@ public class EmployeeFactory {
               .build();
    }
 
-   // ==================== Seed Methods (No UI) ====================
 
    public Employee createFullTimeForSeed(int id, String name, String department, String bankAccount,
                                          BigDecimal baseSalary, BigDecimal bonus) {
