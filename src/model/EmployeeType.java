@@ -2,7 +2,8 @@ package model;
 
 public enum EmployeeType {
    FULL_TIME("Full-Time"),
-   CONTRACTOR("Contractor");
+   CONTRACTOR("Contractor"),
+   FIXED_CONTRACTOR("Fixed Contractor");
 
    public final String label;
 

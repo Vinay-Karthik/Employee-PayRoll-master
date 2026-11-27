@@ -1,5 +1,5 @@
 package decorator.pipeline;
 
 public enum DecoratorType {
-    HRA, TRANSPORT, BONUS, INSURANCE
+   HRA, TRANSPORT, BONUS, INSURANCE
 }
