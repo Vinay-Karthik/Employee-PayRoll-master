@@ -7,16 +7,17 @@ import java.math.BigDecimal;
 import java.util.EnumSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiFunction;
 
 public class SalaryEnhancementPipeline {
     private final Set<DecoratorType> applied = EnumSet.noneOf(DecoratorType.class);
-    private final Map<DecoratorType, DecoratorFactory> factories;
+    private final Map<DecoratorType, BiFunction<SalaryComponent, BigDecimal, SalaryComponent>> creators;
     private SalaryComponent current;
 
     public SalaryEnhancementPipeline(BigDecimal baseSalary,
-                                     Map<DecoratorType, DecoratorFactory> factories) {
+                                     Map<DecoratorType, BiFunction<SalaryComponent, BigDecimal, SalaryComponent>> creators) {
         this.current = new BaseSalary(baseSalary);
-        this.factories = Map.copyOf(factories);
+        this.creators = Map.copyOf(creators);
     }
 
     public SalaryEnhancementPipeline apply(DecoratorType type, BigDecimal customAmount) {
@@ -24,14 +25,12 @@ public class SalaryEnhancementPipeline {
             throw new IllegalStateException(type + " already applied");
         }
 
-        DecoratorFactory factory = factories.get(type);
-        if (factory == null) {
-            throw new IllegalStateException("No factory registered for: " + type);
+        BiFunction<SalaryComponent, BigDecimal, SalaryComponent> creator = creators.get(type);
+        if (creator == null) {
+            throw new IllegalStateException("No creator registered for: " + type);
         }
 
-        current = (customAmount != null)
-                ? factory.create(current, customAmount)
-                : factory.createWithDefault(current);
+        current = creator.apply(current, customAmount);
 
         applied.add(type);
         return this;
